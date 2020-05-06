@@ -2,6 +2,7 @@ import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -27,12 +28,14 @@ public class JSONtest {
     public void IsDefaultProviderExists(JSONObject event) throws FileNotFoundException {
         final JSONArray providers;
         providers = (JSONArray) event.get("IDs");
+        int providersCount = 0;
 
         Iterator<JSONObject> iterator = providers.iterator();
         while (iterator.hasNext()) {
             JSONObject provider = iterator.next();
 //TODO: Move getting teamnames and providers into additional class Event
             if (provider.containsKey("d")) {
+                providersCount++;
 
                 JSONArray team1 = (JSONArray) event.get("T1");
                 Iterator <JSONObject> team1iterator = team1.iterator();
@@ -48,6 +51,10 @@ public class JSONtest {
 
                 System.out.println(provider.get("P") + "-" + provider.get("ID") + "\n" +
                             "Team1: " + team1name + " | Team2: " + team2name);
+            }
+
+            if (providersCount == 0){
+                Assert.fail("There is not a default provider in this event");
             }
         }
     }
