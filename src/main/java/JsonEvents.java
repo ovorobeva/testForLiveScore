@@ -47,12 +47,4 @@ public class JsonEvents {
         return events;
     }
 
-
-    public JSONArray getProviders(JSONObject event){
-        JSONArray providers;
-        providers = (JSONArray) event.get("IDs");
-        return providers;
-    }
-
-
 }
