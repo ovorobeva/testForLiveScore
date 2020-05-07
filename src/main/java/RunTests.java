@@ -17,26 +17,36 @@ public class RunTests {
     public static void main(String[] args) throws FileNotFoundException {
         String fileName;
         SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy_hhmmss");
-        String currentDateTime = format.format(new Date()).toString();
+        String currentDateTime = format.format(new Date());
 
         PrintStream report = new PrintStream(new FileOutputStream(currentDateTime + "report.log"));
         System.setOut(report);
         System.setErr(report);
+        String fileType;
+        String runType;
 
-        if (args[0].equals("default")) {
+        if (args.length == 0){
+            fileType = "-default";
+            runType = "-all";
+        } else {
+            fileType = args[0];
+            runType = args[1];
+        }
+
+        if (fileType.equals("-default")) {
             fileName = "src/main/resources/response.json";
-        } else fileName = args[0];
+        } else fileName = fileType;
 
         JsonEvents jsonEvents = new JsonEvents(new FileReader(fileName));
         Object[] events = jsonEvents.getEvents();
 
-        if (args[1].equals("IsOverallStatusNull")) {
+        if (runType.equals("IsOverallStatusNull")) {
             runIsOverallStatusNull(events);
-        } else if (args[1].equals("IsErpCorrect")) {
+        } else if (runType.equals("IsErpCorrect")) {
             runIsErpCorrect(events);
-        } else if (args[1].equals("IsDefaultProviderExists")) {
+        } else if (runType.equals("IsDefaultProviderExists")) {
             runIsDefaultProviderExists(events);
-        } else if (args[1].equals("all")) {
+        } else if (runType.equals("-all")) {
             runIsOverallStatusNull(events);
             runIsErpCorrect(events);
             runIsDefaultProviderExists(events);
