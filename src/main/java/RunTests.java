@@ -35,7 +35,7 @@ public class RunTests {
         }
 
         if (fileType.equals("-default")) {
-            fileName = "src/main/resources/response.json";
+            fileName = "resources/response.json";
         } else fileName = fileType;
 
         JsonEvents jsonEvents = new JsonEvents(new FileReader(fileName));

@@ -11,15 +11,6 @@ import java.util.Iterator;
 
 @RunWith(JUnitParamsRunner.class)
 public class JSONtest {
-    private JsonEvents jsonEvents = new JsonEvents(new FileReader("src/test/testResources/response.json"));
-
-    public JSONtest() throws FileNotFoundException {
-    }
-
-    private Object[] getEvent() {
-        return jsonEvents.getEvents();
-    }
-
 
     @Test
     @Parameters(method = "getEvent")
