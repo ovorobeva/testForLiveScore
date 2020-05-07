@@ -28,7 +28,7 @@ public class JsonEvents {
 
     }
 
-    public JSONArray getEvents(){
+    public Object[] getEvents(){
         JSONArray stages;
         JSONArray eventsContainer;
 
@@ -44,7 +44,7 @@ public class JsonEvents {
                 }
             }
         }
-        return events;
+        return events.toArray();
     }
 
 
