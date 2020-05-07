@@ -25,7 +25,7 @@ public class JSONtest {
 
     @Test
     @Parameters(method = "getEvent")
-    public void IsDefaultProviderExists(JSONObject event) throws FileNotFoundException {
+    public void IsDefaultProviderExists(JSONObject event) {
         final JSONArray providers;
         providers = (JSONArray) event.get("IDs");
         int providersCount = 0;
@@ -57,5 +57,22 @@ public class JSONtest {
                 Assert.fail("There is not a default provider in this event");
             }
         }
+    }
+
+    @Test
+    @Parameters(method = "getEvent")
+    public void IsOverallStatusNill(JSONObject event) {
+        String[] elements = new String[]{"Tr1", "Tr2", "Trh1", "Trh2"};
+        int badNotNull = 0;
+        StringBuilder badElements = new StringBuilder();
+        if ((Long) event.get("Epr") == 0){
+            for (String element: elements){
+                if (event.get(element) != null) {
+                    badNotNull++;
+                    badElements.append(element).append(" = ").append(event.get(element)).append("\n");
+                }
+            }
+        }
+        Assert.assertFalse("There are bad elements in this event: \n" + badElements, badNotNull > 0);
     }
 }
