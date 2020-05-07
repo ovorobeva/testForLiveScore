@@ -6,8 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.Iterator;
 
 @RunWith(JUnitParamsRunner.class)
@@ -21,11 +20,14 @@ public class JSONtest {
         return jsonEvents.getEvents();
     }
 
+
     @Test
     @Parameters(method = "getEvent")
-    public void IsDefaultProviderExists(JSONObject event) {
+    public static String IsDefaultProviderExists(JSONObject event) throws FileNotFoundException {
+        String output = "";
         JsonEvent testedEvent = new JsonEvent(event);
         JSONArray providers = testedEvent.getProviders();
+
 
         int providersCount = 0;
         Iterator<JSONObject> iterator = providers.iterator();
@@ -35,19 +37,24 @@ public class JSONtest {
             if (provider.containsKey("d")) {
                 providersCount++;
 
-                System.out.println(provider.get("P") + "-" + provider.get("ID") + "\n" +
-                            "Team1: " + testedEvent.getTeamName(1) + " | Team2: " + testedEvent.getTeamName(2));
+                output = provider.get("P") + "-" + provider.get("ID") + "\n" +
+                        "Team1: " + testedEvent.getTeamName(1) + " | Team2: " + testedEvent.getTeamName(2);
             }
 
             if (providersCount == 0){
-                Assert.fail("There is no default provider in this event");
+                output = "There is no default provider in this event";
+                Assert.fail(output);
+
             }
         }
+        return output;
     }
 
     @Test
     @Parameters(method = "getEvent")
-    public void IsOverallStatusNull(JSONObject event) {
+    public static String IsOverallStatusNull(JSONObject event) throws FileNotFoundException {
+        String output;
+
         String[] elements = new String[]{"Tr1", "Tr2", "Trh1", "Trh2"};
         int badNotNull = 0;
         StringBuilder badElements = new StringBuilder();
@@ -59,13 +66,17 @@ public class JSONtest {
                 }
             }
         }
-        Assert.assertFalse("There are bad elements in this event: \n" + badElements, badNotNull > 0);
-
+        if (badNotNull > 0){
+            output = "There are bad elements in this event: \n" + badElements;
+            Assert.fail(output);
+        } else output = "Test is passed";
+        return output;
     }
 
     @Test
     @Parameters(method = "getEvent")
-    public void IsErpCorrect(JSONObject event) {
+    public static String IsErpCorrect(JSONObject event) {
+        String output;
         int[] correctValues = new int[]{0,1,2,3,4,5,6,7};
         boolean isCorrect = false;
         for (int value: correctValues){
@@ -78,6 +89,12 @@ public class JSONtest {
                 Assert.fail("Erp is not an int");
             }
         }
-        Assert.assertTrue("Erp is incorrent, value is " + event.get("Epr") + " Correct values are: 0,1,2,3,4,5,6,7", isCorrect);
+        if (isCorrect){
+            output = "Test is passed";
+        } else {
+            output = "Erp is incorrent, value is " + event.get("Epr") + " Correct values are: 0,1,2,3,4,5,6,7";
+            Assert.fail(output);
+        }
+        return output;
     }
 }
