@@ -20,6 +20,7 @@ public class RunTests {
         String currentDateTime = format.format(new Date());
 
         PrintStream report = new PrintStream(new FileOutputStream(currentDateTime + "report.log"));
+        PrintStream oldStream = new PrintStream(System.out);
         System.setOut(report);
         System.setErr(report);
         String fileType;
@@ -51,6 +52,8 @@ public class RunTests {
             runIsErpCorrect(events);
             runIsDefaultProviderExists(events);
         }
+        System.setOut(oldStream);
+        System.out.println("You can see your report in the log files at the jar directory");
 
     }
 
