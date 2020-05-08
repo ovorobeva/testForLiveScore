@@ -3,6 +3,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,7 +14,7 @@ public class JsonEvents {
     private JSONArray events = new JSONArray();
 
 
-    JsonEvents(FileReader jsonFile){
+    JsonEvents(BufferedReader jsonFile){
         JSONParser parser = new JSONParser();
         try {
             jsonObject = (JSONObject) parser.parse(jsonFile);

@@ -4,10 +4,7 @@ import org.json.simple.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.PrintStream;
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,7 +12,7 @@ import java.util.Date;
 @RunWith(JUnitParamsRunner.class)
 public class RunTests {
     public static void main(String[] args) throws FileNotFoundException {
-        String fileName;
+        InputStream fileName;
         SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy_hhmmss");
         String currentDateTime = format.format(new Date());
 
@@ -35,10 +32,13 @@ public class RunTests {
         }
 
         if (fileType.equals("-default")) {
-            fileName = "resources/response.json";
-        } else fileName = fileType;
+            fileName = RunTests.class.getResourceAsStream("response.json");
+        } else{
+            fileName = new FileInputStream(fileType);
+        }
 
-        JsonEvents jsonEvents = new JsonEvents(new FileReader(fileName));
+        JsonEvents jsonEvents = new JsonEvents(new BufferedReader(new InputStreamReader(fileName)));
+
         Object[] events = jsonEvents.getEvents();
 
         if (runType.equals("IsOverallStatusNull")) {
